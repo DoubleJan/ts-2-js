@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "allowJs": true,
+        "module": "commonjs",
+        "removeComments": true,
+        "target": "es2015"
+    },
+    "exclude": [
+        "node_modules",
+        "webpack.config.js",
+        "build",
+        "plugins"
+    ]
+}
