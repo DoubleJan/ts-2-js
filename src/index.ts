@@ -7,4 +7,6 @@ export default (() => {
     components.enums();
     // 接口类型
     components.interfaces();
+    // 泛型类型
+    components.generic();
 })();
