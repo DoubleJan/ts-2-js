@@ -205,6 +205,8 @@ function interfaceExtends() {
 
 export default () => {
     
+    console.log('TypeScript 接口类型')
+    
     defineBasicInterface();
 
     defineOptionalInterface();
@@ -222,4 +224,6 @@ export default () => {
     extendsInterface();
 
     interfaceExtends();
+    
+    console.log('\n');
 }

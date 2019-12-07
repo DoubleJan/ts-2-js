@@ -136,6 +136,7 @@ function interfaceExtends() {
     button.printState();
 }
 exports["default"] = (function () {
+    console.log('TypeScript 接口类型');
     defineBasicInterface();
     defineOptionalInterface();
     defineReadonlyInterface();
@@ -145,4 +146,5 @@ exports["default"] = (function () {
     classExpression();
     extendsInterface();
     interfaceExtends();
+    console.log('\n');
 });
