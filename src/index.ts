@@ -5,4 +5,6 @@ export default (() => {
     components.basicTypes();
     // 枚举类型
     components.enums();
+    // 接口类型
+    components.interfaces();
 })();

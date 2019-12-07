@@ -10,6 +10,7 @@
         "node_modules",
         "webpack.config.js",
         "build",
-        "plugins"
+        "plugins",
+        ".js"
     ]
 }
