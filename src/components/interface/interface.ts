@@ -1,4 +1,3 @@
-import { pbkdf2 } from "crypto";
 
 // 接口类型
 
@@ -10,11 +9,11 @@ function defineBasicInterface() {
     }
 
     function printPoint(point: Point) {
-        console.log(`Point: { x: ${point.x}, y: ${point.y} }`);
+        return `Point: { x: ${point.x}, y: ${point.y} }`
     }
 
     const point: Point = { x: 3, y: 4 }
-    printPoint(point);
+    return printPoint(point);
 
     // const point3D: Point = { x: 3, y: 4, z: 5 }   // TypeScript error
 }
@@ -28,12 +27,11 @@ function defineOptionalInterface() {
     }
 
     function printPoint(point: Point) {
-        console.log(`PointOptional: { x: ${point.x}, y: ${point.y}, z: ${point.z} }`);
+        return `{ x: ${point.x}, y: ${point.y}, z: ${point.z} }`
     }
 
     const point: Point = { x: 3, y: 4 }
-    printPoint(point);
-    printPoint({ x: 1, y: 2, z: 5.78 });
+    return `point: ${printPoint(point)}, pointOptional: ${printPoint({ x: 1, y: 2, z: 5.78 })}`;
 }
 
 // 带只读属性的接口定义
@@ -54,6 +52,8 @@ function defineReadonlyInterface() {
             // this.origin = o;   // TypeScript error
         }
     }
+
+    return `origin readonly: ${JSON.stringify(new PointObj(1))}`;
 }
 
 // 带索引签名的接口定义
@@ -64,38 +64,38 @@ function defineIndexInterface() {
         [propName: string]: any
     }
     const sq: Square = { width: 100, 1: 'square', borderd: false }
-    console.log(sq);
+    return `Square(has index): ${JSON.stringify(sq)}`
 }
 
 // 带函数类型的接口定义
 function defineFunctionInterface() {
     interface Point1 {
-        printPoint(desc: string): void
+        printPoint(desc: string): string
     }
 
     interface Point2 {
-        (desc: string): void
+        (desc: string): string
     }
 
     class P1 implements Point1 {
         printPoint(desc: string) {
-            console.log(`P1 desc: ${desc}`);
+            return `P1 desc: ${desc}`;
         }
     }
 
     const p1 = new P1();
-    p1.printPoint('p1 implements Point1')
 
     const p2: Point2 = (desc: string) => {
-        console.log(`P: ${desc}`);
+        return `P2 desc: ${desc}`;
     }
-    p2('p2 implements Point2');
+    
+    return `${p1.printPoint('p1 implements Point1')}, ${p2('p2 implements Point2')}`;
 }
 
 // 接口的类实现, 类实现时，只对实例部分进行参数检查
 function classImplements() {
     interface ClockInterface {
-        tick(): void
+        tick(): string
     }
     
     interface ClockConstruct {
@@ -114,12 +114,12 @@ function classImplements() {
             this.minute = m; 
         }
         tick() {
-            console.log(`it is ${this.hour}: ${this.minute} clock`);
+            return `it is ${this.hour}: ${this.minute} clock`;
         }
     }
 
     const digital = createClock(DigitalClock, 12, 25);
-    digital.tick();
+    return `${digital.tick()}`;
 }
 
 // 类表达式
@@ -129,16 +129,16 @@ function classExpression() {
     }
     
     interface ClockInterface {
-        tick(): void;
+        tick(): string;
     }
 
     const Clock: ClockConstruct = class Clock implements ClockInterface {
         constructor(h: number, m: number) {}
-        tick() { console.log('class expression') }
+        tick() { return 'class expression' }
     }
 
     const clock = new Clock(13, 46);
-    clock.tick();
+    return `${clock.tick()}`;
 }
 
 // 接口继承与合并
@@ -156,13 +156,14 @@ function extendsInterface() {
     }
 
     const printShape = (shape: Shape) => {
-        console.log(`Shape: { color: ${shape.color}, opacity: ${shape.opacity} }`);
+        return `Shape: { color: ${shape.color}, opacity: ${shape.opacity} }`
     }
+
     const printSquare = (square: Square) => {
-        console.log(`Square: { color: ${square.color}, opacity: ${square.opacity}, borderLength: ${square.borderLength} }`);
+        return `Square: { color: ${square.color}, opacity: ${square.opacity}, borderLength: ${square.borderLength} }`
     }
-    printShape({ color: 'red', opacity: 0.7 });
-    printSquare({ color: 'greed', opacity: 0.9, borderLength: 3 });
+
+    return `${printShape({ color: 'red', opacity: 0.7 })}, ${printSquare({ color: 'greed', opacity: 0.9, borderLength: 3 })}`;
 }
 
 // 接口继承类
@@ -174,19 +175,19 @@ function interfaceExtends() {
             this.state = state;
         }
         printState() {
-            console.log(`Control state: ${this.state}`);
+            return `Control state: ${this.state}`;
         }
     }
 
     interface SelectableControl extends Control {
-        select(): void;
+        select(): string;
     }
 
     class Button extends Control implements SelectableControl {
         constructor(state: boolean) {
             super(state)
         }
-        select(){ console.log('select') }
+        select(){ return 'select' }
     }
 
     // TypeScript error
@@ -197,7 +198,7 @@ function interfaceExtends() {
     // }
 
     const button: Button = new Button(false);
-    button.printState();
+    return `${button.printState()}`;
 }
 
 
@@ -205,25 +206,27 @@ function interfaceExtends() {
 
 export default () => {
     
-    console.log('TypeScript 接口类型')
-    
-    defineBasicInterface();
+    console.log('TypeScript 接口类型');
 
-    defineOptionalInterface();
+    console.log(`
+        基本的接口定义: ${defineBasicInterface()};
 
-    defineReadonlyInterface();
+        带可选属性的接口定义: ${defineOptionalInterface()};
 
-    defineIndexInterface();
+        带只读属性的接口定义: ${defineReadonlyInterface()};
 
-    defineFunctionInterface();
+        带索引签名的接口定义: ${defineIndexInterface()};
 
-    classImplements();
+        带函数类型的接口定义: ${defineFunctionInterface()};
 
-    classExpression();
+        接口的类实现: ${classImplements()};
 
-    extendsInterface();
+        接口实现的类表达式语法: ${classExpression()};
 
-    interfaceExtends();
+        接口的继承与合并: ${extendsInterface()};
+
+        接口继承类: ${interfaceExtends()};
+    `)
     
     console.log('\n');
 }
