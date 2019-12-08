@@ -9,4 +9,6 @@ export default (() => {
     components.interfaces();
     // 泛型类型
     components.generic();
+    // 类型推断
+    components.inference();
 })();
