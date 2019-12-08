@@ -10,4 +10,6 @@ exports["default"] = (function () {
     components_1["default"].interfaces();
     // 泛型类型
     components_1["default"].generic();
+    // 函数类型
+    components_1["default"].functions();
 })();
