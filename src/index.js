@@ -6,6 +6,8 @@ exports["default"] = (function () {
     components_1["default"].basicTypes();
     // 枚举类型
     components_1["default"].enums();
+    // 函数类型
+    components_1["default"].functions();
     // 接口类型
     components_1["default"].interfaces();
     // 泛型类型
