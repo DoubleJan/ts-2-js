@@ -8,6 +8,8 @@ exports["default"] = (function () {
     components_1["default"].enums();
     // 函数类型
     components_1["default"].functions();
+    // 类的类型
+    components_1["default"].classes();
     // 接口类型
     components_1["default"].interfaces();
     // 泛型类型

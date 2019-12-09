@@ -7,6 +7,8 @@ export default (() => {
     components.enums();
     // 函数类型
     components.functions();
+    // 类的类型
+    components.classes();
     // 接口类型
     components.interfaces();
     // 泛型类型

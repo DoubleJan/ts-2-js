@@ -127,5 +127,7 @@ export default () => {
         函数的this类型约束: ${thisConstraint()};
 
         函数的重载: ${fnOverride()};
-    `)
+    `);
+    
+    console.log('\n');
 }

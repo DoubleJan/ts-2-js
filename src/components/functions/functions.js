@@ -86,4 +86,5 @@ function fnOverride() {
 exports["default"] = (function () {
     console.log('TypeScript 函数类型');
     console.log("\n        \u51FD\u6570\u7C7B\u578B\u5B9A\u4E49: " + defineFunctionType() + ";\n        \n        \u533F\u540D\u51FD\u6570\u7C7B\u578B\u5B9A\u4E49: " + defineAnonymousFunction() + ";\n\n        \u51FD\u6570\u7684\u53C2\u6570\u7EA6\u675F: " + paramsConstraint() + ";\n\n        \u51FD\u6570\u7684this\u7C7B\u578B\u7EA6\u675F: " + thisConstraint() + ";\n\n        \u51FD\u6570\u7684\u91CD\u8F7D: " + fnOverride() + ";\n    ");
+    console.log('\n');
 });
