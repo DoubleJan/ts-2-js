@@ -16,4 +16,6 @@ exports["default"] = (function () {
     components_1["default"].generic();
     // 类型推断
     components_1["default"].inference();
+    // 高级类型
+    components_1["default"].senior();
 })();

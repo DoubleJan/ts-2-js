@@ -15,5 +15,7 @@ export default (() => {
     components.generic();
     // 类型推断
     components.inference();
+    // 高级类型
+    components.senior();
     
 })();

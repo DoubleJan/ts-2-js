@@ -5,8 +5,8 @@ import generic from './generic/generic';
 import inference from './inference/inference';
 import functions from './functions/functions';
 import classes from './classes/classes'
-
+import senior from './senior/senior';
 
 export default {
-    basicTypes, enums, interfaces, generic, functions, inference, classes
+    basicTypes, enums, interfaces, generic, functions, inference, classes, senior
 }
