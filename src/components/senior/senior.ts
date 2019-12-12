@@ -6,16 +6,6 @@
 function intersectionTypes() {
     function extend<First, Second>(first: First, second: Second): First & Second {
         const result: Partial<First & Second> = { ...first, ...second }
-        // for (const prop in first) {
-        //     if (first.hasOwnProperty(prop)) {
-        //         (<First>result)[prop] = first[prop];
-        //     }
-        // }
-        // for (const prop in second) {
-        //     if (second.hasOwnProperty(prop)) {
-        //         (<Second>result)[prop] = second[prop];
-        //     }
-        // }
         return <First & Second>result;
     }
 
@@ -197,6 +187,87 @@ function literal() {
     return `AB: ${ab}, BIN: ${bin}`;
 }
 
+// 索引类型
+// 如果一个变量是另一个变量的一个属性可以通过
+// 索引类型查询操作符 keyof 和 索引访问操作符 [] 进行类型注解和访问
+function indexTypes() {
+
+    // T是一个任意类型，K类型是T类型中，任意一个属性的类型，形参names是K类型变量组成的数组
+    // 返回值 T[K][]: T类型的K属性数组（第一个方括号表示取属性，第二个表示数组类型）
+    function pluck<T, K extends keyof T>(o: T, names: K[]): T[K][] {
+        return names.map(n => o[n]);
+    }
+
+    interface Person {
+        name: string;
+        age: number;
+    }
+
+    const person: Person = {
+        name: 'doublejan',
+        age: 17
+    }
+
+    const strs: string[] = pluck(person, ['name']);
+    return `Person Name: ${strs}`;
+}
+
+// 映射类型
+// 对于一些属性，我们希望它们能够有公共的约束，比如全部是可选的，全部是只读的
+// 这时，使用映射类型，可以从旧类型中以相同的方式转换出来一批新的类型
+function mappingTypes() {
+    interface Person {
+        name: string;
+        age: number;
+    }
+
+    // 这里使用了索引查询操作符 keyof把P变量的类型绑定为T的属性类型
+    // 又使用索引签名的语法 [prop: propType]: <type>，匹配到传进来的泛型T的所有属性
+    // 这种映射被称为 同态映射 ，因为所有的映射都是发生在类型T之上的，没有别的变量和属性参与
+    type Readonly<T> = {
+        readonly [P in keyof T]: T[P];
+    }
+    type Partial<T> = {
+        [P in keyof T]?: T[P];
+    }
+
+    const pPartial: Partial<Person> = { name: 'only name' }
+    const pReadonly: Readonly<Person> = { name: 'const name', age: 32 }
+    return `${JSON.stringify(pPartial)}, ${JSON.stringify(pReadonly)}`;
+}
+
+// 层叠映射
+// 映射就像css一样，是可以层叠的，编译器在声明新的类型前，会拷贝所有已存在的修饰符
+// 比如某类型第一层属性是可选的，将所有可选的属性映射为只读的，那么这些属性就是不仅可选，且要求只读
+function cascadingMapping() {
+    type Proxy<T> = {
+        get(): T;
+        set(value: T): void;
+    }
+    type Proxify<T> = {
+        [P in keyof T]: Proxy<T[P]>
+    }
+
+    
+}
+
+// 定义一个返回有条件类型的函数
+declare function f<T extends boolean> (x: T): T extends true ? string: number;
+// 有条件类型
+// 有条件的类型 T extends U ? X : Y 或者解析为X，或者解析为Y，再或者延迟解析
+function conditionType() {
+    return `${f(Math.random() < 0.5)}`;
+}
+
+// 分布式有条件类型
+// 分布式有条件类型在实例化时会自动分发成联合类型
+// 例如，实例化T extends U ? X : Y，T的类型为A | B | C，
+// 会被解析为(A extends U ? X : Y) | (B extends U ? X : Y) | (C extends U ? X : Y)
+
+
+
+
+
 
 
 export default () => {
@@ -218,6 +289,12 @@ export default () => {
         类型别名: ${typeAnotherName()};
 
         数字和字符串字面量: ${literal()};
+
+        索引类型: ${indexTypes()};
+
+        映射类型: ${mappingTypes()};
+
+        有条件类型: ${conditionType()};
     `);
 
     console.log('\n');

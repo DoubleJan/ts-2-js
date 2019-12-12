@@ -31,16 +31,6 @@ exports.__esModule = true;
 function intersectionTypes() {
     function extend(first, second) {
         var result = __assign(__assign({}, first), second);
-        // for (const prop in first) {
-        //     if (first.hasOwnProperty(prop)) {
-        //         (<First>result)[prop] = first[prop];
-        //     }
-        // }
-        // for (const prop in second) {
-        //     if (second.hasOwnProperty(prop)) {
-        //         (<Second>result)[prop] = second[prop];
-        //     }
-        // }
         return result;
     }
     var Cat = /** @class */ (function () {
@@ -193,8 +183,46 @@ function literal() {
     var bin = 1;
     return "AB: " + ab + ", BIN: " + bin;
 }
+// 索引类型
+// 如果一个变量是另一个变量的一个属性可以通过
+// 索引类型查询操作符 keyof 和 索引访问操作符 [] 进行类型注解和访问
+function indexTypes() {
+    // T是一个任意类型，K类型是T类型中，任意一个属性的类型，形参names是K类型变量组成的数组
+    // 返回值 T[K][]: T类型的K属性数组（第一个方括号表示取属性，第二个表示数组类型）
+    function pluck(o, names) {
+        return names.map(function (n) { return o[n]; });
+    }
+    var person = {
+        name: 'doublejan',
+        age: 17
+    };
+    var strs = pluck(person, ['name']);
+    return "Person Name: " + strs;
+}
+// 映射类型
+// 对于一些属性，我们希望它们能够有公共的约束，比如全部是可选的，全部是只读的
+// 这时，使用映射类型，可以从旧类型中以相同的方式转换出来一批新的类型
+function mappingTypes() {
+    var pPartial = { name: 'only name' };
+    var pReadonly = { name: 'const name', age: 32 };
+    return JSON.stringify(pPartial) + ", " + JSON.stringify(pReadonly);
+}
+// 层叠映射
+// 映射就像css一样，是可以层叠的，编译器在声明新的类型前，会拷贝所有已存在的修饰符
+// 比如某类型第一层属性是可选的，将所有可选的属性映射为只读的，那么这些属性就是不仅可选，且要求只读
+function cascadingMapping() {
+}
+// 有条件类型
+// 有条件的类型 T extends U ? X : Y 或者解析为X，或者解析为Y，再或者延迟解析
+function conditionType() {
+    return "" + f(Math.random() < 0.5);
+}
+// 分布式有条件类型
+// 分布式有条件类型在实例化时会自动分发成联合类型
+// 例如，实例化T extends U ? X : Y，T的类型为A | B | C，
+// 会被解析为(A extends U ? X : Y) | (B extends U ? X : Y) | (C extends U ? X : Y)
 exports["default"] = (function () {
     console.log('TypeScript 高级类型');
-    console.log("\n        \u4EA4\u53C9\u7C7B\u578B: " + intersectionTypes() + ";\n\n        \u8054\u5408\u7C7B\u578B: " + unionTypes() + ";\n\n        \u7C7B\u578B\u8C13\u8BCD: " + typeGuards(true) + ", " + typeGuards(false) + ";\n\n        typeof\u7C7B\u578B\u5B88\u536B: " + typeofTypeGuard() + ";\n\n        instanceof\u7C7B\u578B\u5B88\u536B: " + instanceofTypeGuard() + ";\n\n        \u4E0D\u4E3Anull\u548Cundefined: " + notNullOrUndefined() + ";\n\n        \u7C7B\u578B\u522B\u540D: " + typeAnotherName() + ";\n\n        \u6570\u5B57\u548C\u5B57\u7B26\u4E32\u5B57\u9762\u91CF: " + literal() + ";\n    ");
+    console.log("\n        \u4EA4\u53C9\u7C7B\u578B: " + intersectionTypes() + ";\n\n        \u8054\u5408\u7C7B\u578B: " + unionTypes() + ";\n\n        \u7C7B\u578B\u8C13\u8BCD: " + typeGuards(true) + ", " + typeGuards(false) + ";\n\n        typeof\u7C7B\u578B\u5B88\u536B: " + typeofTypeGuard() + ";\n\n        instanceof\u7C7B\u578B\u5B88\u536B: " + instanceofTypeGuard() + ";\n\n        \u4E0D\u4E3Anull\u548Cundefined: " + notNullOrUndefined() + ";\n\n        \u7C7B\u578B\u522B\u540D: " + typeAnotherName() + ";\n\n        \u6570\u5B57\u548C\u5B57\u7B26\u4E32\u5B57\u9762\u91CF: " + literal() + ";\n\n        \u7D22\u5F15\u7C7B\u578B: " + indexTypes() + ";\n\n        \u6620\u5C04\u7C7B\u578B: " + mappingTypes() + ";\n\n        \u6709\u6761\u4EF6\u7C7B\u578B: " + conditionType() + ";\n    ");
     console.log('\n');
 });
