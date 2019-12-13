@@ -212,17 +212,27 @@ function mappingTypes() {
 // 比如某类型第一层属性是可选的，将所有可选的属性映射为只读的，那么这些属性就是不仅可选，且要求只读
 function cascadingMapping() {
 }
+// 定义一个返回有条件类型的函数
+//  有条件的类型会以一个条件表达式进行类型关系检测，从而在两种类型中选择其一
+// declare function f<T extends boolean> (x: T): T extends true ? string: number;
 // 有条件类型
 // 有条件的类型 T extends U ? X : Y 或者解析为X，或者解析为Y，再或者延迟解析
 function conditionType() {
-    return "" + f(Math.random() < 0.5);
+    var fn = function () { return 'T3 is Function Type'; };
+    var fnVoid = function () { };
+    var str = 'string type';
+    return fn() + ", " + fnVoid() + ", " + str;
 }
 // 分布式有条件类型
 // 分布式有条件类型在实例化时会自动分发成联合类型
 // 例如，实例化T extends U ? X : Y，T的类型为A | B | C，
 // 会被解析为(A extends U ? X : Y) | (B extends U ? X : Y) | (C extends U ? X : Y)
+function distributedCondition() {
+    var obj = { key: 'value' };
+    return "obj: " + JSON.stringify(obj);
+}
 exports["default"] = (function () {
     console.log('TypeScript 高级类型');
-    console.log("\n        \u4EA4\u53C9\u7C7B\u578B: " + intersectionTypes() + ";\n\n        \u8054\u5408\u7C7B\u578B: " + unionTypes() + ";\n\n        \u7C7B\u578B\u8C13\u8BCD: " + typeGuards(true) + ", " + typeGuards(false) + ";\n\n        typeof\u7C7B\u578B\u5B88\u536B: " + typeofTypeGuard() + ";\n\n        instanceof\u7C7B\u578B\u5B88\u536B: " + instanceofTypeGuard() + ";\n\n        \u4E0D\u4E3Anull\u548Cundefined: " + notNullOrUndefined() + ";\n\n        \u7C7B\u578B\u522B\u540D: " + typeAnotherName() + ";\n\n        \u6570\u5B57\u548C\u5B57\u7B26\u4E32\u5B57\u9762\u91CF: " + literal() + ";\n\n        \u7D22\u5F15\u7C7B\u578B: " + indexTypes() + ";\n\n        \u6620\u5C04\u7C7B\u578B: " + mappingTypes() + ";\n\n        \u6709\u6761\u4EF6\u7C7B\u578B: " + conditionType() + ";\n    ");
+    console.log("\n        \u4EA4\u53C9\u7C7B\u578B: " + intersectionTypes() + ";\n\n        \u8054\u5408\u7C7B\u578B: " + unionTypes() + ";\n\n        \u7C7B\u578B\u8C13\u8BCD: " + typeGuards(true) + ", " + typeGuards(false) + ";\n\n        typeof\u7C7B\u578B\u5B88\u536B: " + typeofTypeGuard() + ";\n\n        instanceof\u7C7B\u578B\u5B88\u536B: " + instanceofTypeGuard() + ";\n\n        \u4E0D\u4E3Anull\u548Cundefined: " + notNullOrUndefined() + ";\n\n        \u7C7B\u578B\u522B\u540D: " + typeAnotherName() + ";\n\n        \u6570\u5B57\u548C\u5B57\u7B26\u4E32\u5B57\u9762\u91CF: " + literal() + ";\n\n        \u7D22\u5F15\u7C7B\u578B: " + indexTypes() + ";\n\n        \u6620\u5C04\u7C7B\u578B: " + mappingTypes() + ";\n\n        \u6709\u6761\u4EF6\u7C7B\u578B: " + conditionType() + ";\n\n        \u5206\u5E03\u5F0F\u6709\u6761\u4EF6\u7C7B\u578B: " + distributedCondition() + ";\n    ");
     console.log('\n');
 });
